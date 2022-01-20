@@ -1,4 +1,4 @@
-class IceBoxRefrigerator
+class REFRIGERATOR
 
   attr_reader :height, :width, :depth
 
@@ -12,37 +12,34 @@ class IceBoxRefrigerator
   end
 end
 
-class BrokenRefrigerator
+class IceBoxRefrigerator < REFRIGERATOR; end
 
-  attr_reader :height, :width, :depth
-
-  def initialize(height = 0, width = 0, depth = 0)
-    @height = height
-    @width = width
-    @depth = depth
-  end
-
-  def add(beverage)
-  end
-
-end
+class BrokenRefrigerator < REFRIGERATOR; end
 
 class RootBeer; end
 class Kombucha; end
 
 class Kitchen
 
-  def initialize
-    @refrigerator = IceBoxRefrigerator.new
+  GALLONS_PER_CUBIC_FOOT = 7.48052
+
+  def initialize(refrigerator)
+    @refrigerator = refrigerator
   end
 
   def add_beer_to_refrigerator
     @refrigerator.add( RootBeer.new )
   end
 
+  def fridge_volume
+    @refrigerator.height * @refrigerator.width * @refrigerator.depth
+  end
+
+  def fridge_volume_gallons
+    fridge_volume * GALLONS_PER_CUBIC_FOOT
+  end
+
   def to_s
-    fridge_volume = @refrigerator.height * @refrigerator.width * @refrigerator.depth
-    fridge_volume_gallons = fridge_volume * 7.48052
     "Kitchen. Fridge volume = #{fridge_volume_gallons} gallons"
   end
 
@@ -50,7 +47,7 @@ end
 
 # Current usage example:
 
-kitchen = Kitchen.new
+kitchen = Kitchen.new(BrokenRefrigerator.new)
 kitchen.add_beer_to_refrigerator
 puts kitchen
 
@@ -60,4 +57,3 @@ puts kitchen
 #          add any beverage other than beer.
 
 # Goal: Create a kitchen with a BrokenRefrigerator, and add Kombucha to it.
-
